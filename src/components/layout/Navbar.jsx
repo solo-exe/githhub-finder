@@ -5,7 +5,14 @@ import PropTypes from 'prop-types'
 
 function Navbar({ title }) {
     return (
-        <div className='navbar mb-12 shadow-lg | bg-neutral text-neutral-content'>
+
+        // mb-12 margin bottom
+        // shadow-lg drop shadow
+        // bg-beutral backgroud neutral daisyui
+
+        // mx-auto margin-auto on left and right
+
+        <div className='navbar | mb-12 | shadow-lg | bg-neutral | text-neutral-content'>
             <div className="container justify-between  mx-auto">
 
                 <div className="flex-none px-2 mx-2">
@@ -15,7 +22,7 @@ function Navbar({ title }) {
                     </Link>
                 </div>
 
-                <div className="flex px-2 mx-2">
+                <div className="flex flex-1 justify-end px-2 mx-2">
                     <div className="flex justify-end">
                         <Link to='/' className='btn btn-ghost btn-sm rounded-btn'>Home</Link>
                     </div>
