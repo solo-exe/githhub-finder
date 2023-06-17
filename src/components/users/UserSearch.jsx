@@ -6,7 +6,8 @@ export default function UserSearch() {
     const [text, setText] = useState('')
 
     const { users, searchUsers, clearResults } = useContext(GithubContext)
-    const { alert, setAlert } = useContext(AlertContext)
+    const { setAlert } = useContext(AlertContext)
+    // console.log(alert)
 
     const handleChange = (e) => {
         setText(e.target.value)

@@ -11,9 +11,9 @@ function UserItem({ user: { login, avatar_url } }) {
                         <img src={avatar_url} alt="Profile" />
                     </div>
                 </div>
-                <div className="card-title">
-                    <Link className='test-base-content text-opacity-40' to={`/users/${login}`}>{login}</Link>
-                    {/* <h2>{login}</h2> */}
+                <div>
+                    <h2 className='card-title'>{login}</h2>
+                    <Link className='text-base text-opacity-20' to={`/user/${login}`}>Visit Profile</Link>
                 </div>
             </div>
         </div>

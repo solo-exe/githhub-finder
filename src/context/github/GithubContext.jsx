@@ -1,5 +1,5 @@
 import { createContext, useReducer } from 'react'
-import gitHubReducer from './GitHubReducer'
+import GithubReducer from './GitHubReducer'
 const GITHUB_URL = process.env.REACT_APP_GITHUB_URL
 
 const GithubContext = createContext()
@@ -7,15 +7,12 @@ const GithubContext = createContext()
 export const GithubProvider = ({ children }) => {
 
     const initialState = {
+        user: {},
         users: [],
         loading: false
     }
 
-    const [state, dispatch] = useReducer(gitHubReducer, initialState)
-
-    // const [users, setUsers] = useState([])
-    // const [loading, setLoading] = useState(true)
-
+    const [state, dispatch] = useReducer(GithubReducer, initialState)
 
     // Get Sample Users for testing
     const fetchUsers = async () => {
@@ -27,16 +24,14 @@ export const GithubProvider = ({ children }) => {
         })
         const data = await response.json()
         dispatch({ type: 'GET_USERS', payload: data, })
-        // setUsers(data)
-        // setLoading(false)
     }
 
+    // Search for Users
     const searchUsers = async (text) => {
         setLoading()
         const params = new URLSearchParams({
             q: text
         })
-        console.log(`${GITHUB_URL}/search/users?${params}`)
         const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
             headers: {
                 // Authrozation: `token ${authtoken}`
@@ -44,8 +39,22 @@ export const GithubProvider = ({ children }) => {
         })
         const { items } = await response.json()
         dispatch({ type: 'GET_USERS', payload: items, })
-        // setUsers(data)
-        // setLoading(false)
+    }
+
+    // Get Single User
+    const getUser = async (login) => {
+        setLoading()
+        const response = JSON.parse(await (fetch(`${GITHUB_URL}/users/${login}`, {
+            headers: {
+                // Authrozation: `token ${authtoken}`
+            }
+        }).then(response => response.text()).catch(error => console.log('error', error))))
+
+        if (response.status === 404) {
+            window.location = '/notfound'
+        } else {
+            dispatch({ type: 'GET_USER', payload: response, })
+        }
     }
 
     const clearUsers = async () => {
@@ -57,9 +66,11 @@ export const GithubProvider = ({ children }) => {
 
     return (
         <GithubContext.Provider value={{
+            user: state.user,
             users: state.users,
             loading: state.loading,
             fetchUsers,
+            getUser,
             searchUsers,
             clearUsers
         }}>

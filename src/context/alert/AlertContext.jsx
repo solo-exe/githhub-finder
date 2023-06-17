@@ -15,10 +15,9 @@ export const AlertProvider = ({ children }) => {
             payload: { msg, type }
         })
 
-        // setTimeout(() => {
-        //     console.log('REMOVE ALERT RUNS')
-        //     dispatch({ type: 'REMOVE_AlERT' })
-        // }, 3000)
+        setTimeout(() => {
+            dispatch({ type: 'REMOVE_ALERT' })
+        }, 3000)
     }
 
     return <AlertContext.Provider value={{
