@@ -9,6 +9,7 @@ export const GithubProvider = ({ children }) => {
     const initialState = {
         user: {},
         users: [],
+        repos: [],
         loading: false
     }
 
@@ -42,7 +43,7 @@ export const GithubProvider = ({ children }) => {
     }
 
     // Get Single User
-    const getUser = async (login) => {
+    const getUserAndRepos = async (login) => {
         setLoading()
         const response = JSON.parse(await (fetch(`${GITHUB_URL}/users/${login}`, {
             headers: {
@@ -55,11 +56,37 @@ export const GithubProvider = ({ children }) => {
         } else {
             dispatch({ type: 'GET_USER', payload: response, })
         }
+
+
+        const response2 = JSON.parse(await (fetch(`${GITHUB_URL}/users/${login}/repos`, {
+            headers: {
+                // Authrozation: `token ${authtoken}`
+            }
+        }).then(response2 => response2.text()).catch(error => console.log('error', error))))
+        if (response2.status === 404) {
+            window.location = '/notfound'
+        } else {
+            dispatch({ type: 'GET_REPOS', payload: response2.reverse(), })
+        }
     }
 
     const clearUsers = async () => {
         dispatch({ type: 'CLEAR_USERS' })
     }
+
+    // const getRepos = async (login) => {
+    //     setLoading()
+    //     const response = JSON.parse(await (fetch(`${GITHUB_URL}/users/${login}/repos`, {
+    //         headers: {
+    //             // Authrozation: `token ${authtoken}`
+    //         }
+    //     }).then(response => response.text()).catch(error => console.log('error', error))))
+    //     if (response.status === 404) {
+    //         window.location = '/notfound'
+    //     } else {
+    //         dispatch({ type: 'GET_REPOS', payload: response, })
+    //     }
+    // }
 
     //Set Loading
     const setLoading = () => dispatch({ type: 'SET_LOADING' })
@@ -69,8 +96,11 @@ export const GithubProvider = ({ children }) => {
             user: state.user,
             users: state.users,
             loading: state.loading,
+            repos: state.repos,
+            // getRepos,
+            getUserAndRepos,
             fetchUsers,
-            getUser,
+            // getUser,
             searchUsers,
             clearUsers
         }}>

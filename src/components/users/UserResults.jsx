@@ -7,7 +7,7 @@ export default function UserResults() {
 
     const { users, loading, fetchUsers } = useContext(GithubContext)
 
-    // fetchUsers()
+    console.log(fetchUsers)
 
     if (!loading) {
         return (
