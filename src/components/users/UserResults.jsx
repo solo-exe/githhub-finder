@@ -5,9 +5,7 @@ import GithubContext from '../../context/github/GithubContext.jsx'
 
 export default function UserResults() {
 
-    const { users, loading, fetchUsers } = useContext(GithubContext)
-
-    console.log(fetchUsers)
+    const { users, loading } = useContext(GithubContext)
 
     if (!loading) {
         return (
